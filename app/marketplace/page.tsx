@@ -49,6 +49,9 @@ export default function MarketplacePage() {
   const [viewMode, setViewMode] = useState<"grid" | "map">("grid");
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
   const [geoLoading, setGeoLoading] = useState(false);
+  // Ids de negocios cuyo catalogo (repuestos/productos) coincide con la busqueda,
+  // para que terminos como "Bujias" encuentren el taller que los vende.
+  const [productMatchIds, setProductMatchIds] = useState<Set<number>>(new Set());
 
   useEffect(() => {
     let cancelled = false;
@@ -65,6 +68,32 @@ export default function MarketplacePage() {
     })();
     return () => { cancelled = true; };
   }, []);
+
+  // Busqueda en el catalogo de productos (debounce) ademas del filtro por negocio.
+  useEffect(() => {
+    const term = search.trim();
+    if (term.length < 2) {
+      setProductMatchIds(new Set());
+      return;
+    }
+    let cancelled = false;
+    const timer = setTimeout(async () => {
+      try {
+        const products = await apiFetch<{ businessId?: number }[]>(
+          `/products/search?name=${encodeURIComponent(term)}`,
+        );
+        if (cancelled) return;
+        const ids = new Set<number>();
+        for (const p of products) {
+          if (typeof p.businessId === "number") ids.add(p.businessId);
+        }
+        setProductMatchIds(ids);
+      } catch {
+        if (!cancelled) setProductMatchIds(new Set());
+      }
+    }, 300);
+    return () => { cancelled = true; clearTimeout(timer); };
+  }, [search]);
 
   const requestUserLocation = () => {
     if ("geolocation" in navigator) {
@@ -101,13 +130,14 @@ export default function MarketplacePage() {
         ? (b.name?.toLowerCase().includes(search.toLowerCase()) ||
           normalizedCategory.toLowerCase().includes(search.toLowerCase()) ||
           b.description?.toLowerCase().includes(search.toLowerCase()) ||
-          locationLabel.toLowerCase().includes(search.toLowerCase()))
+          locationLabel.toLowerCase().includes(search.toLowerCase()) ||
+          productMatchIds.has(b.id))
         : true;
       const matchCat = categoryFilter === "TODOS" ? true : normalizedCategory === categoryFilter;
       const matchLocation = locationFilter === "TODAS" ? true : locationLabel === locationFilter;
       return matchSearch && matchCat && matchLocation;
     });
-  }, [businesses, search, categoryFilter, locationFilter]);
+  }, [businesses, search, categoryFilter, locationFilter, productMatchIds]);
 
   return (
     <main className="min-h-screen bg-slate-50">
