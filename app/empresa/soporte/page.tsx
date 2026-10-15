@@ -88,7 +88,7 @@ export default function SoporteEmpresaPage() {
               onChange={(e) => setSubject(e.target.value)}
               maxLength={255}
               placeholder="Ej: No puedo publicar un producto"
-              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-orange-500 transition"
+              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:ring-2 focus:ring-orange-500 transition"
             />
           </div>
 
@@ -98,7 +98,7 @@ export default function SoporteEmpresaPage() {
               id="category"
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-orange-500 transition"
+              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-900 outline-none focus:ring-2 focus:ring-orange-500 transition"
             >
               {CATEGORIES.map((c) => (
                 <option key={c} value={c}>{c}</option>
@@ -114,7 +114,7 @@ export default function SoporteEmpresaPage() {
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             placeholder="Cuéntanos con detalle qué está ocurriendo..."
-            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-orange-500 transition min-h-[120px] resize-y"
+            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:ring-2 focus:ring-orange-500 transition min-h-[120px] resize-y"
           />
         </div>
 
