@@ -17,6 +17,7 @@ export default function EmpresaDashboardPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [business, setBusiness] = useState<{ name?: string; logoUrl?: string | null } | null>(null);
 
   useEffect(() => {
     if (isLoading || !user) return;
@@ -44,6 +45,22 @@ export default function EmpresaDashboardPage() {
     loadData();
   }, [user, isLoading, selectedBranch]);
 
+  // Identidad del negocio para la cabecera. Desacoplado del dashboard: si no
+  // hay negocio o logo, el panel sigue funcionando sin mostrar error.
+  useEffect(() => {
+    if (isLoading || !user) return;
+    let cancelled = false;
+    (async () => {
+      try {
+        const data = await apiFetch<{ name?: string; logoUrl?: string | null }>("/business/me");
+        if (!cancelled) setBusiness(data);
+      } catch {
+        /* sin negocio o sin logo: se usa el fallback generico */
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [user, isLoading]);
+
   const getLocalTodayStr = () => {
     const d = new Date();
     const year = d.getFullYear();
@@ -67,9 +84,25 @@ export default function EmpresaDashboardPage() {
   return (
     <>
       <header className="flex items-center justify-between gap-4 mb-6">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900">Dashboard General</h1>
-          <p className="mt-0.5 text-sm text-slate-500">Resumen integrado de Servicios y Ventas de Productos</p>
+        <div className="flex items-center gap-4 min-w-0">
+          <Link href="/empresa/perfil" className="shrink-0" title="Perfil del negocio">
+            {business?.logoUrl ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={business.logoUrl}
+                alt={business?.name ?? "Logo del negocio"}
+                className="h-12 w-12 rounded-2xl object-cover border border-slate-200"
+              />
+            ) : (
+              <span className="flex h-12 w-12 items-center justify-center rounded-2xl border border-orange-100 bg-orange-50 text-lg font-bold text-orange-600">
+                {business?.name?.[0]?.toUpperCase() ?? "N"}
+              </span>
+            )}
+          </Link>
+          <div className="min-w-0">
+            <h1 className="text-2xl font-bold tracking-tight text-slate-900 truncate">{business?.name ?? "Dashboard General"}</h1>
+            <p className="mt-0.5 text-sm text-slate-500">Resumen integrado de Servicios y Ventas de Productos</p>
+          </div>
         </div>
       </header>
 

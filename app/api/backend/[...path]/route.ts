@@ -8,6 +8,8 @@ function isPublicRequest(method: string, path: string): boolean {
   if (method === 'GET' && path.startsWith('services/public/')) return true;
   if (method === 'GET' && path.startsWith('products/public/')) return true;
   if (method === 'GET' && path === 'plans') return true;
+  if (method === 'GET' && path === 'products/search') return true;
+  if (method === 'GET' && path === 'business/search') return true;
   if (method === 'POST' && path === 'reclamaciones') return true;
   return false;
 }

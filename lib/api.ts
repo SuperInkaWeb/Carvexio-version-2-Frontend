@@ -4,6 +4,18 @@ type ApiFetchOptions = RequestInit & {
   token?: string; // Mantener por compatibilidad, pero ya no es necesario con el proxy
 };
 
+// Error de API que conserva el codigo HTTP para que la UI pueda distinguir
+// casos de negocio (ej. 403 por limite de plan) de errores reales.
+export class ApiError extends Error {
+  readonly status: number;
+
+  constructor(status: number, message: string) {
+    super(message);
+    this.name = "ApiError";
+    this.status = status;
+  }
+}
+
 function joinApiPath(path: string) {
   if (!path) return API_PREFIX;
   // Eliminamos el prefijo /api si el path ya lo trae, para evitar /api/backend/api/...
@@ -42,7 +54,8 @@ export async function apiFetch<T = unknown>(
         // body no era JSON, seguimos con el formato genérico de abajo
       }
     }
-    throw new Error(
+    throw new ApiError(
+      response.status,
       message ?? `API error ${response.status} ${response.statusText}${body ? ` - ${body}` : ""}`,
     );
   }

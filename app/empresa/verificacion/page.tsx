@@ -84,7 +84,7 @@ export default function VerificacionEmpresaPage() {
               id="documentType"
               value={documentType}
               onChange={(e) => setDocumentType(e.target.value)}
-              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-orange-500 transition"
+              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-900 outline-none focus:ring-2 focus:ring-orange-500 transition"
             >
               {DOCUMENT_TYPES.map((t) => (
                 <option key={t} value={t}>{t}</option>
@@ -101,7 +101,7 @@ export default function VerificacionEmpresaPage() {
               onChange={(e) => setDocumentNumber(e.target.value)}
               maxLength={100}
               placeholder="Ej: 20512345678"
-              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-orange-500 transition"
+              className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 outline-none focus:ring-2 focus:ring-orange-500 transition"
             />
           </div>
         </div>

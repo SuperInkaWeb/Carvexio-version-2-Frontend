@@ -1,6 +1,15 @@
 @import "tailwindcss";
 
+/*
+ * La aplicacion usa un unico tema claro (todas las superficies son claras:
+ * bg-white / bg-slate-50). El antiguo override prefers-color-scheme: dark
+ * cambiaba --foreground a casi blanco; como los inputs/select/textarea usan
+ * fondo claro fijo sin declarar color de texto, heredaban ese blanco y
+ * quedaban ilegibles (blanco sobre fondo claro). Fijamos color-scheme: light
+ * para garantizar contraste accesible en textos y controles nativos.
+ */
 :root {
+  color-scheme: light;
   --background: #ffffff;
   --foreground: #171717;
 }
@@ -10,13 +19,6 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {

@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { useUser } from "@auth0/nextjs-auth0/client";
-import { apiFetch } from "../../../lib/api";
+import { apiFetch, ApiError } from "../../../lib/api";
 import { Report } from "../shared";
 import { KpiCard } from "../components/KpiCard";
 import { useBranch } from "../context/BranchContext";
@@ -13,19 +14,28 @@ export default function EmpresaReportesPage() {
   const [report, setReport] = useState<Report | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [planLocked, setPlanLocked] = useState(false);
 
   useEffect(() => {
     if (isLoading || !user) return;
     const loadData = async () => {
       try {
         setLoading(true);
+        setError(null);
+        setPlanLocked(false);
         const today = new Date().toISOString().split("T")[0];
         const monthStart = today.slice(0, 8) + "01";
         const branchParam = selectedBranch ? `&localId=${selectedBranch.id}` : "";
         const reportData = await apiFetch<Report>(`/reports?start=${monthStart}&end=${today}${branchParam}`);
         setReport(reportData);
       } catch (err) {
-        setError(err instanceof Error ? err.message : "Error al cargar reportes");
+        // 403 en Reportes = la funcion no esta incluida en el plan actual.
+        // Se muestra como invitacion a mejorar el plan, no como error tecnico.
+        if (err instanceof ApiError && err.status === 403) {
+          setPlanLocked(true);
+        } else {
+          setError(err instanceof Error ? err.message : "Error al cargar reportes");
+        }
       } finally {
         setLoading(false);
       }
@@ -42,7 +52,23 @@ export default function EmpresaReportesPage() {
         </div>
       </header>
 
-      {error ? (
+      {planLocked ? (
+        <div className="rounded-3xl border border-orange-200 bg-orange-50 px-6 py-12 text-center">
+          <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-orange-100 text-orange-600">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+          </div>
+          <h2 className="text-lg font-bold text-slate-900">Los reportes son parte de un plan superior</h2>
+          <p className="mx-auto mt-1 max-w-md text-sm text-slate-600">
+            Mejora tu plan para acceder a las métricas de ventas, servicios más solicitados y clientes frecuentes de tu taller.
+          </p>
+          <Link
+            href="/empresa/plan"
+            className="mt-5 inline-flex items-center justify-center rounded-xl bg-orange-500 px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-orange-600"
+          >
+            Ver planes
+          </Link>
+        </div>
+      ) : error ? (
         <div className="rounded-3xl border border-rose-200 bg-rose-50 px-6 py-10 text-center">
           <p className="text-sm font-medium text-rose-700">{error}</p>
         </div>
