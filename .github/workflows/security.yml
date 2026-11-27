@@ -1,0 +1,65 @@
+name: Seguridad
+
+# Automatizacion de seguridad en CI (Fase 3 de la auditoria):
+# - CodeQL: analisis estatico (SAST) de JavaScript/TypeScript.
+# - npm audit: alerta de CVEs en dependencias (informativo, no bloquea).
+# - dependency-review: bloquea PRs que introduzcan dependencias vulnerables.
+# - gitleaks: escaneo de secretos filtrados en el codigo/historial.
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    - cron: '0 6 * * 1'   # lunes 06:00 UTC
+
+permissions:
+  contents: read
+
+jobs:
+  codeql:
+    name: CodeQL (JS/TS)
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: github/codeql-action/init@v3
+        with:
+          languages: javascript-typescript
+      - uses: github/codeql-action/analyze@v3
+
+  npm-audit:
+    name: npm audit (informativo)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm ci
+      - name: Auditar dependencias
+        run: npm audit --audit-level=high
+        continue-on-error: true
+
+  dependency-review:
+    name: Revision de dependencias
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/dependency-review-action@v4
+        with:
+          fail-on-severity: high
+
+  gitleaks:
+    name: Escaneo de secretos
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: gitleaks/gitleaks-action@v2
