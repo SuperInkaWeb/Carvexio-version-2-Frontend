@@ -23,6 +23,23 @@ const nextConfig: NextConfig = {
  async rewrites() {
   return [];
 },
+ // Cabeceras de seguridad (ID-006). No se incluye Content-Security-Policy aqui
+ // porque Next.js requiere CSP basada en nonce (via middleware) para no romper
+ // la hidratacion; se recomienda anadirla en una iteracion posterior.
+ async headers() {
+  return [
+   {
+    source: "/:path*",
+    headers: [
+     { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
+     { key: "X-Frame-Options", value: "DENY" },
+     { key: "X-Content-Type-Options", value: "nosniff" },
+     { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+     { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=(self)" },
+    ],
+   },
+  ];
+ },
 };
 
 export default nextConfig;
