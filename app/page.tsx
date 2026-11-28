@@ -354,7 +354,7 @@ export default function HomePage() {
                 La plataforma todo en uno para talleres, lubricentros y lavados. Gestiona clientes, reservas, inventario y ventas.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                <button type="button" onClick={() => { window.location.href = "/api/auth/login?screen_hint=signup"; }} className="px-8 py-4 rounded-xl bg-orange-500 text-white font-bold text-lg hover:bg-orange-400 transition shadow-lg shadow-orange-500/30">
+                <button type="button" onClick={() => { window.location.href = "/auth/login?screen_hint=signup"; }} className="px-8 py-4 rounded-xl bg-orange-500 text-white font-bold text-lg hover:bg-orange-400 transition shadow-lg shadow-orange-500/30">
                   Comenzar gratis
                 </button>
                 <a href="#funcionalidades">
@@ -624,7 +624,7 @@ export default function HomePage() {
                         <div className="w-full mt-auto pt-4">
                           <button
                             type="button"
-                            onClick={() => { window.location.href = "/api/auth/login?screen_hint=signup"; }}
+                            onClick={() => { window.location.href = "/auth/login?screen_hint=signup"; }}
                             className={`w-full py-3 rounded-2xl font-bold text-xs uppercase tracking-wider transition-all duration-300 shadow-sm ${plan.destacado
                               ? "bg-orange-500 text-white hover:bg-orange-400 hover:shadow-lg hover:shadow-orange-200"
                               : "bg-slate-900 text-white hover:bg-slate-800"
@@ -684,7 +684,7 @@ export default function HomePage() {
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h2 className="text-3xl lg:text-4xl font-bold mb-4">¿Listo para digitalizar tu negocio?</h2>
           <p className="text-blue-200 text-lg mb-8">Únete a cientos de talleres que ya usan AutoManage</p>
-          <button type="button" onClick={() => { window.location.href = "/api/auth/login?screen_hint=signup"; }} className="px-10 py-4 rounded-xl bg-orange-500 text-white font-bold text-lg hover:bg-orange-400 transition shadow-lg shadow-orange-500/30">
+          <button type="button" onClick={() => { window.location.href = "/auth/login?screen_hint=signup"; }} className="px-10 py-4 rounded-xl bg-orange-500 text-white font-bold text-lg hover:bg-orange-400 transition shadow-lg shadow-orange-500/30">
             Comenzar gratis ahora
           </button>
         </div>

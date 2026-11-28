@@ -1,4 +1,4 @@
-import { getSession } from "@auth0/nextjs-auth0";
+import { auth0 } from "@/lib/auth0";
 import { NextRequest, NextResponse } from "next/server";
 
 const ROLE_CLAIM = "https://api.carvexio.com/roles";
@@ -7,8 +7,7 @@ const CONFIGURED_ROLES = ["ADMIN", "EMPRESA", "CLIENTE"];
 
 export async function POST(req: NextRequest) {
   try {
-    const res = new NextResponse();
-    const session = await getSession(req, res);
+    const session = await auth0.getSession();
 
     if (!session?.user) {
       return NextResponse.json({ error: "No autorizado" }, { status: 401 });
@@ -52,7 +51,8 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const issuerRaw = process.env.AUTH0_ISSUER_BASE_URL;
+    const issuerRaw = process.env.AUTH0_ISSUER_BASE_URL
+      || (process.env.AUTH0_DOMAIN ? `https://${process.env.AUTH0_DOMAIN}` : undefined);
     const clientId = process.env.AUTH0_M2M_CLIENT_ID;
     const clientSecret = process.env.AUTH0_M2M_CLIENT_SECRET;
 

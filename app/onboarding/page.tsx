@@ -23,7 +23,7 @@ export default function OnboardingPage() {
 
       // Redirigir directo al dashboard correcto (forzando re-login para refrescar el token)
       const returnTo = role === "EMPRESA" ? "/empresa/dashboard" : "/cliente/dashboard";
-      window.location.href = `/api/auth/login?returnTo=${encodeURIComponent(returnTo)}`;
+      window.location.href = `/auth/login?returnTo=${encodeURIComponent(returnTo)}`;
     } catch (err) {
       setError(err instanceof Error ? err.message : "Error al procesar");
       setSelecting(null);
@@ -31,7 +31,7 @@ export default function OnboardingPage() {
   };
 
   const handleBack = () => {
-    window.location.href = "/api/auth/logout?returnTo=" + encodeURIComponent("http://localhost:3000");
+    window.location.href = "/auth/logout?returnTo=" + encodeURIComponent("http://localhost:3000");
   };
 
   if (isLoading) return null;

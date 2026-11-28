@@ -19,7 +19,7 @@ export default function EmpresaLayout({ children }: { children: React.ReactNode 
     if (isLoading) return;
 
     if (!user) {
-      router.replace("/api/auth/login");
+      router.replace("/auth/login");
       return;
     }
 
@@ -39,7 +39,7 @@ export default function EmpresaLayout({ children }: { children: React.ReactNode 
       .catch((err: unknown) => {
         const msg = err instanceof Error ? err.message : "";
         if (msg.includes("401") || msg.includes("403")) {
-          router.replace("/api/auth/login");
+          router.replace("/auth/login");
         } else {
           setNeedsSetup(true);
         }
@@ -91,7 +91,7 @@ export default function EmpresaLayout({ children }: { children: React.ReactNode 
             </p>
           </div>
           <button
-            onClick={() => { window.location.href = "/api/auth/logout"; }}
+            onClick={() => { window.location.href = "/auth/logout"; }}
             className="w-full bg-slate-900 text-white font-bold py-3.5 rounded-2xl hover:bg-slate-800 transition duration-300 shadow-sm"
           >
             Cerrar sesión

@@ -31,7 +31,7 @@ export default function AdminUsuariosPage() {
     if (isLoading) return;
 
     if (!user) {
-      router.replace("/api/auth/login");
+      router.replace("/auth/login");
       return;
     }
 

@@ -52,14 +52,14 @@ export default function PublicNavbar() {
                   <span className="text-sm text-gray-600">Hola, {user.name}</span>
                   <button
                     type="button"
-                    onClick={() => { window.location.href = "/api/auth/logout"; }}
+                    onClick={() => { window.location.href = "/auth/logout"; }}
                     className="px-5 py-2.5 rounded-lg border border-red-200 text-red-600 text-sm font-semibold hover:bg-red-50 transition"
                   >
                     Salir
                   </button>
                 </div>
               ) : (
-                <button type="button" onClick={() => { window.location.href = "/api/auth/login"; }} className="px-5 py-2.5 rounded-lg bg-blue-900 text-white text-sm font-semibold hover:bg-blue-800 transition">
+                <button type="button" onClick={() => { window.location.href = "/auth/login"; }} className="px-5 py-2.5 rounded-lg bg-blue-900 text-white text-sm font-semibold hover:bg-blue-800 transition">
                   Ingresar
                 </button>
               )
@@ -69,7 +69,7 @@ export default function PublicNavbar() {
           {!isLoading && (
             <button
               type="button"
-              onClick={() => { window.location.href = user ? "/api/auth/logout" : "/api/auth/login"; }}
+              onClick={() => { window.location.href = user ? "/auth/logout" : "/auth/login"; }}
               className="md:hidden px-4 py-2 rounded-lg bg-blue-900 text-white text-sm font-semibold"
             >
               {user ? "Salir" : "Ingresar"}
