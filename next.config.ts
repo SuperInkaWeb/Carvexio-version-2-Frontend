@@ -23,7 +23,8 @@ const nextConfig: NextConfig = {
  async rewrites() {
   return [];
 },
- // Cabeceras de seguridad (ID-006). CSP pendiente (requiere nonce via middleware).
+ // Cabeceras de seguridad estaticas (ID-006). La CSP se emite en middleware.ts
+ // porque requiere un nonce por request (actualmente en modo Report-Only).
  async headers() {
   return [
    {
