@@ -1,4 +1,4 @@
-import { getAccessToken } from '@auth0/nextjs-auth0';
+import { auth0 } from '@/lib/auth0';
 import { NextRequest, NextResponse } from 'next/server';
 
 type RouteContext = { params: Promise<{ path: string[] }> };
@@ -44,9 +44,8 @@ async function handleRequest(req: NextRequest, paramsPromise: Promise<{ path: st
     const publicRequest = isPublicRequest(method, path);
 
     try {
-      const res = new NextResponse();
-      const tokenResult = await getAccessToken(req, res);
-      accessToken = tokenResult.accessToken;
+      const tokenResult = await auth0.getAccessToken();
+      accessToken = tokenResult.token;
     } catch {
       if (!publicRequest) {
         console.error('TOKEN ERROR: no se pudo obtener el token de acceso');

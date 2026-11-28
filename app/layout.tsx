@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   },
 };
 
-import { UserProvider } from '@auth0/nextjs-auth0/client';
+import { Auth0Provider } from '@auth0/nextjs-auth0/client';
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -24,9 +24,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body className="antialiased">
-        <UserProvider>
+        <Auth0Provider>
           {children}
-        </UserProvider>
+        </Auth0Provider>
       </body>
     </html>
   );

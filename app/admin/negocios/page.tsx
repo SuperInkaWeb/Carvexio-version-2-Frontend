@@ -19,7 +19,7 @@ export default function AdminNegociosPage() {
     if (isLoading) return;
 
     if (!user) {
-      router.replace("/api/auth/login");
+      router.replace("/auth/login");
       return;
     }
 

@@ -433,7 +433,7 @@ export default function BusinessDetailPage({ params }: PageProps) {
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "";
       if (message.includes("401")) {
-        router.push("/api/auth/login");
+        router.push("/auth/login");
       } else {
         alert(message || "Error al intentar hacer la reserva. Intenta de nuevo.");
       }
@@ -457,7 +457,7 @@ export default function BusinessDetailPage({ params }: PageProps) {
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : "";
       if (message.includes("401")) {
-        router.push("/api/auth/login");
+        router.push("/auth/login");
       } else {
         alert(message || "Error al añadir el producto al carrito.");
       }
@@ -699,7 +699,7 @@ export default function BusinessDetailPage({ params }: PageProps) {
                       <button
                         onClick={() => {
                           if (!user) {
-                            router.push("/api/auth/login");
+                            router.push("/auth/login");
                             return;
                           }
                           const initialBranchId = hasBranches ? (selectedBranch?.id ?? svc.localId ?? business.branches?.[0]?.id ?? null) : null;
@@ -754,7 +754,7 @@ export default function BusinessDetailPage({ params }: PageProps) {
                           <button
                             onClick={() => {
                               if (!user) {
-                                router.push("/api/auth/login");
+                                router.push("/auth/login");
                                 return;
                               }
                               setProductModal(prod);

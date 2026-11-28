@@ -16,7 +16,7 @@ export default function ClienteLayout({ children }: { children: React.ReactNode 
     if (isLoading) return;
 
     if (!user) {
-      router.replace("/api/auth/login");
+      router.replace("/auth/login");
       return;
     }
 

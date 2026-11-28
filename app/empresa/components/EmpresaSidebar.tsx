@@ -50,7 +50,7 @@ export default function EmpresaSidebar({ business, email }: { business: Business
   }, []);
 
   const handleLogout = () => {
-    window.location.href = "/api/auth/logout";
+    window.location.href = "/auth/logout";
   };
 
   const navItems = [

@@ -37,7 +37,7 @@ export default function AdminSidebar() {
 
   const handleLogout = () => { 
     // Redirigir al logout de Auth0
-    window.location.href = "/api/auth/logout";
+    window.location.href = "/auth/logout";
   };
 
   const navItems = [

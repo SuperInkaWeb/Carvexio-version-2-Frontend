@@ -26,7 +26,7 @@ export default function ClienteSidebar({ profile, email }: { profile: UserProfil
   const pathname = usePathname();
 
   const handleLogout = () => {
-    window.location.href = "/api/auth/logout";
+    window.location.href = "/auth/logout";
   };
 
   const navItems = [

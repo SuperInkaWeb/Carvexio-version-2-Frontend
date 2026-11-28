@@ -32,7 +32,7 @@ export default function AdminDashboardPage() {
     if (isLoading) return;
 
     if (!user) {
-      router.replace("/api/auth/login");
+      router.replace("/auth/login");
       return;
     }
 
